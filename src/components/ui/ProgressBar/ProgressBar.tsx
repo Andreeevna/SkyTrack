@@ -1,4 +1,4 @@
-import ICONPLANE from '/public/icons/plane.svg'
+import Plane from '../Plane/Plane'
 
 interface IProps {
 	progress: number
@@ -11,11 +11,7 @@ const ProgressBar = ({ progress }: IProps) => {
 				className='relative w-full h-full  bg-gradient-to-r from-rose-500 to-orange-400 rounded-full'
 				style={{ width: `${progress}%` }}
 			>
-				<img
-					src={ICONPLANE}
-					alt='icon-plane'
-					className='absolute top-1/2 -right-2.5 -translate-y-1/2'
-				/>
+				<Plane className='absolute top-1/2 -right-2.5 -translate-y-1/2' />
 			</div>
 		</div>
 	)

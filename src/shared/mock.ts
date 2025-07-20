@@ -9,7 +9,7 @@ export const dataFlight: IFlight[] = [
 		},
 		route: {
 			seed: 35000,
-			attitude: 0.8,
+			attidude: 0.8,
 		},
 		logo: '/public/icons/turkish-airlines.svg',
 		airline: {
@@ -23,6 +23,7 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'BG',
 			timezone: 'EET',
 			code: 'SOF',
+			coordinates: [42.6967, 23.3219], // [lat, lng]
 		},
 		to: {
 			city: 'Beijing',
@@ -30,8 +31,12 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'CN',
 			timezone: 'CST',
 			code: 'PEK',
+			coordinates: [39.9042, 116.4074], // Исправленные координаты Пекина
 		},
 		progress: 45,
+		currentLocation: {
+			coordinates: [41.5, 65.0], // [lat, lng]
+		},
 	},
 	{
 		id: 'LX38',
@@ -41,7 +46,7 @@ export const dataFlight: IFlight[] = [
 		},
 		route: {
 			seed: 38000,
-			attitude: 0.85,
+			attidude: 0.85,
 		},
 		logo: '/public/icons/SWISS.svg',
 		airline: {
@@ -55,6 +60,7 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'CH',
 			timezone: 'CET',
 			code: 'ZRH',
+			coordinates: [47.4647, 8.5492],
 		},
 		to: {
 			city: 'New York',
@@ -62,8 +68,12 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'US',
 			timezone: 'EST',
 			code: 'JFK',
+			coordinates: [40.6413, -73.7781],
 		},
 		progress: 72,
+		currentLocation: {
+			coordinates: [43.0, -45.0],
+		},
 	},
 	{
 		id: 'LH716',
@@ -73,7 +83,7 @@ export const dataFlight: IFlight[] = [
 		},
 		route: {
 			seed: 40000,
-			attitude: 0.9,
+			attidude: 0.9,
 		},
 		logo: '/public/icons/Lufthansa.svg',
 		airline: {
@@ -87,6 +97,7 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'DE',
 			timezone: 'CET',
 			code: 'FRA',
+			coordinates: [50.0333, 8.5706],
 		},
 		to: {
 			city: 'Tokyo',
@@ -94,8 +105,12 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'JP',
 			timezone: 'JST',
 			code: 'HND',
+			coordinates: [35.5533, 139.7811],
 		},
 		progress: 28,
+		currentLocation: {
+			coordinates: [48.0, 45.0],
+		},
 	},
 	{
 		id: 'FR1234',
@@ -105,7 +120,7 @@ export const dataFlight: IFlight[] = [
 		},
 		route: {
 			seed: 32000,
-			attitude: 0.75,
+			attidude: 0.75,
 		},
 		logo: '/public/icons/Ryanair.svg',
 		airline: {
@@ -119,6 +134,7 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'GB',
 			timezone: 'GMT',
 			code: 'STN',
+			coordinates: [51.885, 0.235],
 		},
 		to: {
 			city: 'Barcelona',
@@ -126,8 +142,12 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'ES',
 			timezone: 'CET',
 			code: 'BCN',
+			coordinates: [41.2971, 2.0785],
 		},
 		progress: 90,
+		currentLocation: {
+			coordinates: [41.8, 2.1],
+		},
 	},
 	{
 		id: 'S75102',
@@ -137,7 +157,7 @@ export const dataFlight: IFlight[] = [
 		},
 		route: {
 			seed: 36000,
-			attitude: 0.8,
+			attidude: 0.8,
 		},
 		logo: '/public/icons/S7airlines.svg',
 		airline: {
@@ -151,6 +171,7 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'RU',
 			timezone: 'MSK',
 			code: 'SVO',
+			coordinates: [55.9726, 37.4146],
 		},
 		to: {
 			city: 'Novosibirsk',
@@ -158,7 +179,11 @@ export const dataFlight: IFlight[] = [
 			countryCode: 'RU',
 			timezone: 'NOVT',
 			code: 'OVB',
+			coordinates: [55.0188, 82.9339],
 		},
 		progress: 15,
+		currentLocation: {
+			coordinates: [55.8, 44.0],
+		},
 	},
 ]

@@ -5,7 +5,7 @@ export interface IFlightAirplane {
 
 export interface IFlightRoute {
 	seed: number
-	attitude: number
+	attidude: number
 }
 
 export interface IFlightLocation {
@@ -14,6 +14,7 @@ export interface IFlightLocation {
 	countryCode: string
 	timezone: string
 	code: string
+	coordinates: [number, number]
 }
 
 export interface IFlightAirline {
@@ -31,4 +32,5 @@ export interface IFlight {
 	from: IFlightLocation
 	to: IFlightLocation
 	progress: number
+	currentLocation: Pick<IFlightLocation, 'coordinates'>
 }
