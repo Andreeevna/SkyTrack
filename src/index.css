@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+@theme {
+	--breakpoint-*: initial;
+}
+
+@custom-variant 2xl (@media (max-width: 1650px));
+@custom-variant xl (@media (max-width: 1399px));
+@custom-variant lg (@media (max-width: 1200px));
+@custom-variant md (@media (max-width: 992px));
+@custom-variant sm (@media (max-width: 768px));
+@custom-variant smm (@media (max-width: 661px));
+@custom-variant xs (@media (max-width: 480px));
+@custom-variant xss (@media (max-width: 360px));
+
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+body {
+	color: #fff;
+	background-color: #252525;
+}
+
+ul,
+ol {
+	list-style: none;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+figure,
+blockquote,
+dl,
+dd {
+	margin: 0;
+}
+
+button {
+	@apply bg-transparent border-none cursor-pointer;
+}
+
+.dark * {
+	--bg-primary: #1c1c1c;
+	--bg-secondary: #3a3a3aea;
+
+	--text-primary: #ffff;
+	--text-secondary: #e3e3e3;
+
+	--color-orange: #fba316;
+}
+
+.light * {
+	--bg-primary: #e2e2e2;
+	--bg-secondary: #c5c5c5ea;
+
+	--text-primary: #333;
+	--text-secondary: #c5c5c5ea;
+
+	--color-orange: #fba316;
+}
