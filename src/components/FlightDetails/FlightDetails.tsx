@@ -1,21 +1,13 @@
-import { useSearchParams } from 'react-router-dom'
-import { QUERY_PARAMS_FLIGHT } from '../../utils/constants'
-import { useMemo } from 'react'
-import { dataFlight } from '../../shared/mock'
 import FlightRoute from './FlightRoute'
 import FlightScheduler from './FlightScheduler'
 import FlightInfo from './FlightInfo'
 import FlightControl from './FlightControl'
 import FlightAction from './FlightAction'
 import FlightStatus from './FlightStatus'
+import { useCurrentFlight } from '@/hooks/useCurrentFlight'
 
 const FlightDetails = () => {
-	const [searchParams] = useSearchParams()
-	const selectedFlight = searchParams.get(QUERY_PARAMS_FLIGHT)
-
-	const foundedFlight = useMemo(() => {
-		return dataFlight.find(flight => flight.id === selectedFlight)
-	}, [selectedFlight])
+	const { foundedFlight } = useCurrentFlight()
 
 	if (!foundedFlight) {
 		return
