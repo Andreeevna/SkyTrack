@@ -5,17 +5,24 @@ const ICON = `M20.2,15.7L20.2,15.7c1.1-1.6,1.8-3.6,1.8-5.7c0-5.6-4.5-10-10-10S2,
   C20.1,15.8,20.2,15.8,20.2,15.7z`
 
 const pinStyle = {
-	fill: '#d00',
 	stroke: 'none',
 }
 
-interface IPops {}
+interface IPops {
+	size: number
+	className?: string
+}
 
-function Pin(props) {
-	const { size = 20 } = props
+const Pin = (props: IPops) => {
+	const { size = 20, className = '' } = props
 
 	return (
-		<svg height={size} viewBox='0 0 24 24' style={pinStyle}>
+		<svg
+			height={size}
+			viewBox='0 0 24 24'
+			style={pinStyle}
+			className={className}
+		>
 			<path d={ICON} />
 		</svg>
 	)

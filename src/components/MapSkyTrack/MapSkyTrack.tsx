@@ -54,8 +54,8 @@ const MapSkyTrack = () => {
 		<Map
 			ref={ref}
 			initialViewState={{
-				longitude: -122.45,
-				latitude: 37.78,
+				longitude: foundedFlight?.currentLocation.coordinates[1] || -122.45,
+				latitude: foundedFlight?.currentLocation.coordinates[0] || 37.78,
 				zoom: 4,
 			}}
 			mapStyle='https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
@@ -71,18 +71,22 @@ const MapSkyTrack = () => {
 			>
 				<Plane className='fill-[#fff]' />
 			</Marker>
-			<Marker
-				longitude={foundedFlight?.from.coordinates[1] || -122.4}
-				latitude={foundedFlight?.from.coordinates[0] || 37.8}
-			>
-				<Pin size={20} />
-			</Marker>
-			<Marker
-				longitude={foundedFlight?.to.coordinates[1] || -122.4}
-				latitude={foundedFlight?.to.coordinates[0] || 37.8}
-			>
-				<Pin size={20} />
-			</Marker>
+			{!!foundedFlight?.from.coordinates?.length && (
+				<Marker
+					longitude={foundedFlight?.from.coordinates[1] || -122.4}
+					latitude={foundedFlight?.from.coordinates[0] || 37.8}
+				>
+					<Pin size={22} className='fill-rose-500' />
+				</Marker>
+			)}
+			{!!foundedFlight?.to.coordinates?.length && (
+				<Marker
+					longitude={foundedFlight?.to.coordinates[1] || -122.4}
+					latitude={foundedFlight?.to.coordinates[0] || 37.8}
+				>
+					<Pin size={22} className='fill-orange-400' />
+				</Marker>
+			)}
 		</Map>
 	)
 }
