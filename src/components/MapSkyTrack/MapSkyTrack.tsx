@@ -8,9 +8,10 @@ import Map, {
 import type { FeatureCollection } from 'geojson'
 import 'maplibre-gl/dist/maplibre-gl.css'
 import { useCurrentFlight } from '@/hooks/useCurrentFlight'
-import { useEffect, useRef } from 'react'
+import { useEffect, useMemo, useRef } from 'react'
 import Pin from '../ui/Pin/Pin'
 import Plane from '../ui/Plane/Plane'
+import { dataFlight } from '@/shared/mock'
 
 const geojson: FeatureCollection = {
 	type: 'FeatureCollection',
@@ -38,6 +39,26 @@ const layerStyle: LayerProps = {
 const MapSkyTrack = () => {
 	const { foundedFlight } = useCurrentFlight()
 
+	const allFlightsCoordinaties = useMemo(() => {
+		return dataFlight
+			.filter(flight => flight.id !== foundedFlight?.id)
+			.map(f => {
+				return f.currentLocation.coordinates
+			})
+	}, [foundedFlight])
+
+	const renderAllPlanes = useMemo(() => {
+		return allFlightsCoordinaties.map(coords => {
+			return (
+				<Marker key={coords[1]} longitude={coords[1]} latitude={coords[0]}>
+					<Plane className='fill-[#fff] opacity-50 w-[20px]' />
+				</Marker>
+			)
+		})
+	}, [allFlightsCoordinaties])
+
+	console.log(allFlightsCoordinaties)
+
 	const ref = useRef<MapRef>(null)
 
 	useEffect(() => {
@@ -64,7 +85,7 @@ const MapSkyTrack = () => {
 			<Source id='my-data' type='geojson' data={geojson}>
 				<Layer {...layerStyle} />
 			</Source>
-
+			{renderAllPlanes}
 			<Marker
 				longitude={foundedFlight?.currentLocation.coordinates[1] || -122.4}
 				latitude={foundedFlight?.currentLocation.coordinates[0] || 37.8}
