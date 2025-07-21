@@ -12,6 +12,7 @@ import { useEffect, useMemo, useRef } from 'react'
 import Pin from '../ui/Pin/Pin'
 import Plane from '../ui/Plane/Plane'
 import { dataFlight } from '@/shared/mock'
+import { dashedStyle, solidStyle } from './skyp-track-map.utils'
 
 const geojson: FeatureCollection = {
 	type: 'FeatureCollection',
@@ -57,8 +58,6 @@ const MapSkyTrack = () => {
 		})
 	}, [allFlightsCoordinaties])
 
-	console.log(allFlightsCoordinaties)
-
 	const ref = useRef<MapRef>(null)
 
 	useEffect(() => {
@@ -70,6 +69,53 @@ const MapSkyTrack = () => {
 			ref.current.setZoom(4)
 		}
 	}, [foundedFlight])
+
+	const [solidCoords, dashedCoords] = useMemo(() => {
+		if (
+			!foundedFlight?.to ||
+			!foundedFlight?.from ||
+			!foundedFlight.currentLocation
+		)
+			return [[], []]
+
+		const all = [
+			[foundedFlight.from.coordinates[1], foundedFlight.from.coordinates[0]],
+			[
+				foundedFlight.currentLocation.coordinates[1],
+				foundedFlight.currentLocation.coordinates[0],
+			],
+			[foundedFlight.to.coordinates[1], foundedFlight.to.coordinates[0]],
+		]
+		return [all.slice(0, 2), all.slice(1)]
+	}, [foundedFlight])
+
+	const solidGeoJson: GeoJSON.FeatureCollection = {
+		type: 'FeatureCollection',
+		features: [
+			{
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates: solidCoords,
+				},
+				properties: {},
+			},
+		],
+	}
+
+	const dashedGeoJson: GeoJSON.FeatureCollection = {
+		type: 'FeatureCollection',
+		features: [
+			{
+				type: 'Feature',
+				geometry: {
+					type: 'LineString',
+					coordinates: dashedCoords,
+				},
+				properties: {},
+			},
+		],
+	}
 
 	return (
 		<Map
@@ -85,6 +131,18 @@ const MapSkyTrack = () => {
 			<Source id='my-data' type='geojson' data={geojson}>
 				<Layer {...layerStyle} />
 			</Source>
+			{solidCoords.length > 1 && (
+				<Source id='route-solid' type='geojson' data={solidGeoJson}>
+					<Layer {...solidStyle} />
+				</Source>
+			)}
+
+			{dashedCoords.length > 1 && (
+				<Source id='route-dashed' type='geojson' data={dashedGeoJson}>
+					<Layer {...dashedStyle} />
+				</Source>
+			)}
+
 			{renderAllPlanes}
 			<Marker
 				longitude={foundedFlight?.currentLocation.coordinates[1] || -122.4}
