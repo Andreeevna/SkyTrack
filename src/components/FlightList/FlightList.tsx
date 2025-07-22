@@ -13,15 +13,15 @@ const FlightList = ({ searchQuery }: IProps) => {
 
 		return dataFlight
 			.filter(item => {
-				return Object.entries(item).every(([key, value]) => {
-					if (!(key in searchQuery) || !searchQuery[key]) {
-						return true
-					}
+				return Object.entries(searchQuery).every(([key, value]) => {
+					const field = key.split('.').reduce((obj: any, key) => {
+						return obj?.[key]
+					}, item)
 
-					return value
+					return field
 						?.toString()
 						?.toLowerCase()
-						?.includes(searchQuery[key].toString().toLowerCase())
+						?.includes(value.toString().toLowerCase())
 				})
 			})
 			.map(flight => <FlightItem key={flight.id} flight={flight} />)

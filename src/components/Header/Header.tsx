@@ -19,7 +19,7 @@ interface IProps {
 
 const filteredKey = [
 	{ key: 'id', placeholder: 'Search flight' },
-	{ key: 'airline', placeholder: 'Search airline' },
+	{ key: 'airline.airCountry', placeholder: 'Search airline' },
 ]
 
 const Header = ({ setSearchQuery }: IProps) => {

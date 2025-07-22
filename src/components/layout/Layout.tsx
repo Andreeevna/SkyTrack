@@ -5,9 +5,10 @@ import { useState } from 'react'
 const Layout = () => {
 	const [searchQuery, setSearchQuery] = useState<Record<string, string>>({
 		['id']: '',
-		['airline']: '',
+		['airline.airCountry']: '',
 	})
 
+	console.log(searchQuery)
 	return (
 		<div>
 			<Header setSearchQuery={setSearchQuery} />

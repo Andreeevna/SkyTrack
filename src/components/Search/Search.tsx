@@ -32,7 +32,7 @@ const Search = ({ setSearchQuery, placeholder, name }: IProps) => {
 		['id']: {
 			list: createOptionsForSearch(dataFlight, 'id'),
 		},
-		['airline']: {
+		['airline.airCountry']: {
 			list: createOptionsForSearch(dataFlight, 'airline.airCountry'),
 		},
 	}
