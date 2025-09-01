@@ -13,6 +13,8 @@ import Pin from '../ui/Pin/Pin'
 import Plane from '../ui/Plane/Plane'
 import { dataFlight } from '@/shared/mock'
 import { dashedStyle, solidStyle } from './skyp-track-map.utils'
+import { useTheme } from '@/providers/theme/useTheme'
+import clsx from 'clsx'
 
 const geojson: FeatureCollection = {
 	type: 'FeatureCollection',
@@ -39,6 +41,8 @@ const layerStyle: LayerProps = {
 
 const MapSkyTrack = () => {
 	const { foundedFlight } = useCurrentFlight()
+
+	const { theme } = useTheme()
 
 	const allFlightsCoordinaties = useMemo(() => {
 		return dataFlight
@@ -125,7 +129,11 @@ const MapSkyTrack = () => {
 				latitude: foundedFlight?.currentLocation.coordinates[0] || 37.78,
 				zoom: 4,
 			}}
-			mapStyle='https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+			mapStyle={
+				theme === 'dark'
+					? 'https://basemaps.cartocdn.com/gl/dark-matter-gl-style/style.json'
+					: 'https://basemaps.cartocdn.com/gl/positron-gl-style/style.json'
+			}
 			style={{ width: '100%', height: '100%', pointerEvents: 'auto' }}
 		>
 			<Source id='my-data' type='geojson' data={geojson}>
@@ -133,13 +141,13 @@ const MapSkyTrack = () => {
 			</Source>
 			{solidCoords.length > 1 && (
 				<Source id='route-solid' type='geojson' data={solidGeoJson}>
-					<Layer {...solidStyle} />
+					<Layer {...solidStyle(theme)} />
 				</Source>
 			)}
 
 			{dashedCoords.length > 1 && (
 				<Source id='route-dashed' type='geojson' data={dashedGeoJson}>
-					<Layer {...dashedStyle} />
+					<Layer {...dashedStyle(theme)} />
 				</Source>
 			)}
 
@@ -148,7 +156,7 @@ const MapSkyTrack = () => {
 				longitude={foundedFlight?.currentLocation.coordinates[1] || -122.4}
 				latitude={foundedFlight?.currentLocation.coordinates[0] || 37.8}
 			>
-				<Plane className='fill-[#fff]' />
+				<Plane />
 			</Marker>
 			{!!foundedFlight?.from.coordinates?.length && (
 				<Marker

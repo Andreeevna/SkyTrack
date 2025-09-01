@@ -1,6 +1,7 @@
+import type { ThemeType } from '@/providers/theme/theme.context'
 import type { LayerProps } from 'react-map-gl/maplibre'
 
-export const solidStyle: LayerProps = {
+export const solidStyle = (theme: ThemeType): LayerProps => ({
 	id: 'route-solid',
 	type: 'line',
 	layout: {
@@ -8,19 +9,19 @@ export const solidStyle: LayerProps = {
 		'line-join': 'round',
 	},
 	paint: {
-		'line-color': '#73433F',
-		'line-width': 3,
+		'line-color': theme === 'dark' ? '#f43f5e' : '#f43f5e',
+		'line-width': 1,
 		'line-opacity': 1,
 	},
-}
+})
 
-export const dashedStyle: LayerProps = {
+export const dashedStyle = (theme: ThemeType): LayerProps => ({
 	id: 'route-dashed',
 	type: 'line',
 	paint: {
-		'line-color': '#fb923c',
-		'line-width': 3,
+		'line-color': theme === 'dark' ? '#fff' : '#111',
+		'line-width': 1,
 		'line-dasharray': [5, 3],
 		'line-opacity': 0.8,
 	},
-}
+})
