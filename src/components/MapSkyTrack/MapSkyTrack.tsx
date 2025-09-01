@@ -12,9 +12,13 @@ import { useEffect, useMemo, useRef } from 'react'
 import Pin from '../ui/Pin/Pin'
 import Plane from '../ui/Plane/Plane'
 import { dataFlight } from '@/shared/mock'
-import { dashedStyle, solidStyle } from './skyp-track-map.utils'
+import {
+	createGeoBazier,
+	createSplitGreatCircle,
+	dashedStyle,
+	solidStyle,
+} from './skyp-track-map.utils'
 import { useTheme } from '@/providers/theme/useTheme'
-import clsx from 'clsx'
 
 const geojson: FeatureCollection = {
 	type: 'FeatureCollection',
@@ -93,33 +97,70 @@ const MapSkyTrack = () => {
 		return [all.slice(0, 2), all.slice(1)]
 	}, [foundedFlight])
 
-	const solidGeoJson: GeoJSON.FeatureCollection = {
-		type: 'FeatureCollection',
-		features: [
-			{
-				type: 'Feature',
-				geometry: {
-					type: 'LineString',
-					coordinates: solidCoords,
-				},
-				properties: {},
-			},
-		],
-	}
+	// const solidGeoJson: GeoJSON.FeatureCollection = {
+	// 	type: 'FeatureCollection',
+	// 	features: [
+	// 		{
+	// 			type: 'Feature',
+	// 			geometry: {
+	// 				type: 'LineString',
+	// 				coordinates: solidCoords,
+	// 			},
+	// 			properties: {},
+	// 		},
+	// 	],
+	// }
 
-	const dashedGeoJson: GeoJSON.FeatureCollection = {
-		type: 'FeatureCollection',
-		features: [
-			{
-				type: 'Feature',
-				geometry: {
-					type: 'LineString',
-					coordinates: dashedCoords,
-				},
-				properties: {},
-			},
-		],
-	}
+	// const dashedGeoJson: GeoJSON.FeatureCollection = {
+	// 	type: 'FeatureCollection',
+	// 	features: [
+	// 		{
+	// 			type: 'Feature',
+	// 			geometry: {
+	// 				type: 'LineString',
+	// 				coordinates: dashedCoords,
+	// 			},
+	// 			properties: {},
+	// 		},
+	// 	],
+	// }
+
+	// const solidGeoJsonFeature = useMemo(() => {
+	// 	return solidCoords.length >= 2 ? createGeoBazier(solidCoords) : null
+	// }, [solidCoords])
+
+	// const dashedGeoJsonFeature = useMemo(() => {
+	// 	return dashedCoords.length >= 2 ? createGeoBazier(dashedCoords) : null
+	// }, [dashedCoords])
+
+	const { solidFeature, dashedFeature, snappedPoint, bearing } = useMemo(() => {
+		if (
+			!foundedFlight?.from ||
+			!foundedFlight?.to ||
+			!foundedFlight?.currentLocation
+		)
+			return {
+				solidFeature: null,
+				dashedFeature: null,
+				snappedPoint: null,
+				bearing: 0,
+			}
+
+		const from: [number, number] = [
+			foundedFlight.from.coordinates[1],
+			foundedFlight.from.coordinates[0],
+		]
+		const to: [number, number] = [
+			foundedFlight.to.coordinates[1],
+			foundedFlight.to.coordinates[0],
+		]
+		const current: [number, number] = [
+			foundedFlight.currentLocation.coordinates[1],
+			foundedFlight.currentLocation.coordinates[0],
+		]
+
+		return createSplitGreatCircle(from, to, current)
+	}, [foundedFlight])
 
 	return (
 		<Map
@@ -139,25 +180,46 @@ const MapSkyTrack = () => {
 			<Source id='my-data' type='geojson' data={geojson}>
 				<Layer {...layerStyle} />
 			</Source>
-			{solidCoords.length > 1 && (
-				<Source id='route-solid' type='geojson' data={solidGeoJson}>
+			{solidCoords.length > 1 && solidFeature && (
+				<Source
+					id='route-solid'
+					type='geojson'
+					data={{
+						type: 'FeatureCollection',
+						features: [solidFeature],
+					}}
+				>
 					<Layer {...solidStyle(theme)} />
 				</Source>
 			)}
 
-			{dashedCoords.length > 1 && (
-				<Source id='route-dashed' type='geojson' data={dashedGeoJson}>
+			{dashedCoords.length > 1 && dashedFeature && (
+				<Source
+					id='route-dashed'
+					type='geojson'
+					data={{
+						type: 'FeatureCollection',
+						features: [dashedFeature],
+					}}
+				>
 					<Layer {...dashedStyle(theme)} />
 				</Source>
 			)}
 
 			{renderAllPlanes}
-			<Marker
-				longitude={foundedFlight?.currentLocation.coordinates[1] || -122.4}
-				latitude={foundedFlight?.currentLocation.coordinates[0] || 37.8}
-			>
-				<Plane />
-			</Marker>
+			{snappedPoint && (
+				<Marker longitude={snappedPoint[0]} latitude={snappedPoint[1]}>
+					<div
+						style={{
+							transform: `rotate(${bearing - 90}deg)`,
+							transformOrigin: 'center',
+							transition: 'transform 0.3s ease',
+						}}
+					>
+						<Plane />
+					</div>
+				</Marker>
+			)}
 			{!!foundedFlight?.from.coordinates?.length && (
 				<Marker
 					longitude={foundedFlight?.from.coordinates[1] || -122.4}
